@@ -1,4 +1,11 @@
-"""I can't decide whether to provide these functions stand-alone, in a class, or
+"""List-like functions for making tuples from other tuples.
+
+These functions can be inefficient, but are useful if you really need to do
+list-like operations on tuples. I try to make the functions as generic as
+possible, so they can take any tuple-like arguments that make sense, including
+lists.
+
+I can't decide whether to provide these functions stand-alone, in a class, or
 both, so right now, I'm doing both.
 
 Function names are the same as list method names converted to snakeCase. If the
@@ -9,8 +16,8 @@ return a tuple, usually slightly modified from the first argument.
 """
 
 
-def setItem(self, key, value):
-  return self[:key] + (value,) + self[key + 1:]
+def setItem(seq, key, value):
+  return seq[:key] + (value,) + seq[key + 1:]
 
 
 class Tuple(tuple):
