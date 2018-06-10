@@ -1,3 +1,7 @@
+def setitem(self, key, value):
+  return self[:key] + (value,) + self[key + 1:]
+
+
 class Tuple(tuple):
   """A subclass of tuple whose methods mimic that of lists.
 
@@ -6,5 +10,10 @@ class Tuple(tuple):
   These methods return a modified version of self.
   """
 
-  def setitem(self, key, value):
-    return self[:key] + (value,) + self[key + 1:]
+
+def _fillClass():
+  for name in 'setitem',:
+    setattr(Tuple, name, globals()[name])
+
+
+_fillClass()
