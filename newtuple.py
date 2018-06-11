@@ -19,7 +19,10 @@ from compdescriptors import Abstract
 
 
 def setItem(seq, key, value):
-  return seq[:key] + (value,) + seq[key + 1:]
+  if isinstance(key, int):
+    return seq[:key] + (value,) + seq[key + 1:]
+  if isinstance(key, slice):
+    return seq[:key.start] + value + seq[key.stop:]
 
 
 class Sequence:
