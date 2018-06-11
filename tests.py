@@ -8,12 +8,22 @@ import newtuple
 class TupleTest:
 
   def testSetitem(self):
-    self.assertEqual(self.lib.setItem((0, 1, 2), 1, 666), (0, 666, 2))
+    self.assertEqual(self.call('setItem', (0, 1, 2), 1, 666), (0, 666, 2))
 
 
-def makeTestCase(name, lib):
-  return type(name, (unittest.TestCase, TupleTest), {'lib': lib})
+def makeTestCase(name, call):
+  return type(name, (unittest.TestCase, TupleTest), {'call': call})
 
 
-ClassTest = makeTestCase('Classtest', newtuple.Tuple)
-GenericTest = makeTestCase('GenericTest', newtuple)
+@staticmethod
+def callMethod(name, tup, *args):
+  return getattr(newtuple.Tuple(tup), name)(*args)
+
+
+@staticmethod
+def callFunction(name, tup, *args):
+  return getattr(newtuple, name)(tup, *args)
+
+
+ClassTest = makeTestCase('Classtest', callMethod)
+GenericTest = makeTestCase('GenericTest', callFunction)

@@ -15,18 +15,25 @@ All functions require tuple-like arguments to support slicing and addition and
 return a tuple, usually slightly modified from the first argument.
 """
 
+from compdescriptors import Abstract
+
 
 def setItem(seq, key, value):
   return seq[:key] + (value,) + seq[key + 1:]
 
 
-class Tuple(tuple):
-  """A subclass of tuple whose methods mimic that of lists."""
+class Sequence:
+  __add__ = Abstract()
+  __getitem__ = Abstract()
 
 
 def _fillClass():
   for name in 'setItem',:
-    setattr(Tuple, name, globals()[name])
+    setattr(Sequence, name, globals()[name])
 
 
 _fillClass()
+
+
+class Tuple(tuple, Sequence):
+  """A subclass of tuple whose methods mimic that of lists."""
