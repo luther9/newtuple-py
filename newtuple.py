@@ -15,6 +15,8 @@ All functions require tuple-like arguments to support slicing and addition and
 return a tuple, usually slightly modified from the first argument.
 """
 
+from functools import reduce
+
 from compdescriptors import Abstract
 
 
@@ -22,7 +24,17 @@ def setItem(seq, key, value):
   if isinstance(key, int):
     return seq[:key] + (value,) + seq[key + 1:]
   if isinstance(key, slice):
-    return seq[:key.start] + value + seq[key.stop:]
+    def replace(seq, index):
+      return setItem(seq, index[1], value[index[0]])
+    return (
+      seq[:key.start] + value + seq[key.stop:] if key.step is None
+      else reduce(
+          replace,
+          ((i, j) for i, j in enumerate(range(key.start, key.stop, key.step))),
+          seq,
+      )
+    )
+  raise TypeError('Argument 2 must be an int or slice')
 
 
 class Sequence:

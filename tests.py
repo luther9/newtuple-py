@@ -16,6 +16,12 @@ class TupleTest:
       (0, 10, 20, 100, 3),
     )
 
+  def testSetItemSliceStep(self):
+    self.assertEqual(
+      self.call('setItem', (0, 1, 2, 3, 4), slice(1, 5, 2), (10, 30)),
+      (0, 10, 2, 30, 4),
+    )
+
 
 def makeTestCase(name, call):
   return type(name, (unittest.TestCase, TupleTest), {'call': call})
