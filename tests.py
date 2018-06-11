@@ -27,3 +27,6 @@ def callFunction(name, tup, *args):
 
 ClassTest = makeTestCase('Classtest', callMethod)
 GenericTest = makeTestCase('GenericTest', callFunction)
+
+if __name__ == '__main__':
+  unittest.main()
