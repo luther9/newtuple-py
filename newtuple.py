@@ -67,13 +67,17 @@ def insert(seq, i, x):
   return seq[:i] + (x,) + seq[i:]
 
 
+def pop(seq, i=-1):
+  return delItem(seq, i), seq[i]
+
+
 class Sequence:
   __add__ = Abstract()
   __getitem__ = Abstract()
 
 
 def _fillClass():
-  for name in 'setItem', 'delItem', 'append', 'insert':
+  for name in 'setItem', 'delItem', 'append', 'insert', 'pop':
     setattr(Sequence, name, globals()[name])
 
 
