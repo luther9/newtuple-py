@@ -1,3 +1,6 @@
+# 2018 Luther Thompson
+# This code is public domain under CC0. See the file COPYING for details.
+
 """List-like functions for making tuples from other tuples.
 
 These functions can be inefficient, but are useful if you really need to do

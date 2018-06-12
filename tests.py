@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+# 2018 Luther Thompson
+# This code is public domain under CC0. See the file COPYING for details.
+
 import unittest
 
 import newtuple
