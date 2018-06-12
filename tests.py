@@ -36,6 +36,9 @@ class TupleTest:
   def testAppend(self):
     self.assertEqual(self.call('append', (0, 1), 55), (0, 1, 55))
 
+  def testInsert(self):
+    self.assertEqual(self.call('insert', (0, 1), 1, 55), (0, 55, 1))
+
 
 def makeTestCase(name, call):
   return type(name, (unittest.TestCase, TupleTest), {'call': call})

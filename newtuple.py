@@ -63,13 +63,17 @@ def append(seq, x):
   return seq + (x,)
 
 
+def insert(seq, i, x):
+  return seq[:i] + (x,) + seq[i:]
+
+
 class Sequence:
   __add__ = Abstract()
   __getitem__ = Abstract()
 
 
 def _fillClass():
-  for name in 'setItem', 'delItem', 'append':
+  for name in 'setItem', 'delItem', 'append', 'insert':
     setattr(Sequence, name, globals()[name])
 
 
