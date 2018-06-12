@@ -23,18 +23,20 @@ from compdescriptors import Abstract
 def setItem(seq, key, value):
   if isinstance(key, int):
     return seq[:key] + (value,) + seq[key + 1:]
-  if isinstance(key, slice):
-    def replace(seq, index):
-      return setItem(seq, index[1], value[index[0]])
-    return (
-      seq[:key.start] + value + seq[key.stop:] if key.step is None
-      else reduce(
-          replace,
-          ((i, j) for i, j in enumerate(range(key.start, key.stop, key.step))),
-          seq,
-      )
-    )
-  raise TypeError('Argument 2 must be an int or slice')
+  try:
+    rKey = range(key.start or 0, key.stop, key.step or 1)
+  except TypeError:
+    raise TypeError(
+      f'Argument 2 must be an int, slice, or range, got {type(key)}',
+    )# from None
+
+  def replace(seq, index):
+    return setItem(seq, index[1], value[index[0]])
+
+  return (
+    seq[:key.start] + value + seq[key.stop:] if rKey.step == 1
+    else reduce(replace, ((i, j) for i, j in enumerate(rKey)), seq)
+  )
 
 
 class Sequence:
