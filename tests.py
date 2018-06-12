@@ -22,6 +22,20 @@ class TupleTest:
       (0, 10, 2, 30, 4),
     )
 
+  def testDelItem(self):
+    self.assertEqual(self.call('delItem', (0, 1, 2), 1), (0, 2))
+
+  def testDelItemSlice(self):
+    self.assertEqual(self.call('delItem', (0, 1, 2, 3), slice(1, 3)), (0, 3))
+
+  def testDelItemSliceStep(self):
+    self.assertEqual(
+      self.call('delItem', (0, 1, 2, 3, 4), slice(1, 5, 2)), (0, 2, 4),
+    )
+
+  def testAppend(self):
+    self.assertEqual(self.call('append', (0, 1), 55), (0, 1, 55))
+
 
 def makeTestCase(name, call):
   return type(name, (unittest.TestCase, TupleTest), {'call': call})

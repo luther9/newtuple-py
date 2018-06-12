@@ -20,23 +20,47 @@ from functools import reduce
 from compdescriptors import Abstract
 
 
+def _sliceToRange(s):
+  try:
+    return range(s.start or 0, s.stop, s.step or 1)
+  except TypeError:
+    raise TypeError(
+      f'Argument 2 must be an int, slice, or range, got {type(s)}',
+    )
+
+
 def setItem(seq, key, value):
   if isinstance(key, int):
     return seq[:key] + (value,) + seq[key + 1:]
   try:
-    rKey = range(key.start or 0, key.stop, key.step or 1)
-  except TypeError:
-    raise TypeError(
-      f'Argument 2 must be an int, slice, or range, got {type(key)}',
-    ) from None
+    rKey = _sliceToRange(key)
+  except TypeError as e:
+    raise e from None
 
   def replace(seq, index):
     return setItem(seq, index[1], value[index[0]])
 
   return (
     seq[:key.start] + value + seq[key.stop:] if rKey.step == 1
-    else reduce(replace, ((i, j) for i, j in enumerate(rKey)), seq)
+    else reduce(replace, enumerate(rKey), seq)
   )
+
+
+def delItem(seq, key):
+  if isinstance(key, int):
+    return seq[:key] + seq[key + 1:]
+  try:
+    rKey = _sliceToRange(key)
+  except TypeError as e:
+    raise e from None
+  return (
+    seq[:key.start] + seq[key.stop:] if rKey.step == 1
+    else type(seq)(x for i, x in enumerate(seq) if i not in rKey)
+  )
+
+
+def append(seq, x):
+  return seq + (x,)
 
 
 class Sequence:
@@ -45,7 +69,7 @@ class Sequence:
 
 
 def _fillClass():
-  for name in 'setItem',:
+  for name in 'setItem', 'delItem', 'append':
     setattr(Sequence, name, globals()[name])
 
 
