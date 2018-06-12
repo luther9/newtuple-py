@@ -28,7 +28,7 @@ def setItem(seq, key, value):
   except TypeError:
     raise TypeError(
       f'Argument 2 must be an int, slice, or range, got {type(key)}',
-    )# from None
+    ) from None
 
   def replace(seq, index):
     return setItem(seq, index[1], value[index[0]])
