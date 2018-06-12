@@ -71,13 +71,21 @@ def pop(seq, i=-1):
   return delItem(seq, i), seq[i]
 
 
+def remove(seq, x):
+  try:
+    return delItem(seq, seq.index(x))
+  except ValueError as e:
+    raise e from None
+
+
 class Sequence:
   __add__ = Abstract()
   __getitem__ = Abstract()
+  index = Abstract()
 
 
 def _fillClass():
-  for name in 'setItem', 'delItem', 'append', 'insert', 'pop':
+  for name in 'setItem', 'delItem', 'append', 'insert', 'pop', 'remove':
     setattr(Sequence, name, globals()[name])
 
 

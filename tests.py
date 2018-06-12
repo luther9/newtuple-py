@@ -42,6 +42,9 @@ class TupleTest:
   def testPop(self):
     self.assertEqual(self.call('pop', (0, 1, 2), 1), ((0, 2), 1))
 
+  def testRemove(self):
+    self.assertEqual(self.call('remove', (0, 100, 2, 100), 100), (0, 2, 100))
+
 
 def makeTestCase(name, call):
   return type(name, (unittest.TestCase, TupleTest), {'call': call})
